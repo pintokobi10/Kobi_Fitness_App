@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#102a43">
+<meta name="description" content="Kobi Fitness - המאמן האישי שלך">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<title>Kobi Fitness – המאמן האישי שלי</title>
+<style>
+:root{--navy:#102a43;--blue:#1769aa;--green:#16845b;--bg:#f3f6fa;--card:#fff;--ink:#172b4d;--muted:#64748b;--line:#e3eaf2;--gold:#e5a000}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,"Noto Sans Hebrew",sans-serif}
+header{background:linear-gradient(135deg,#102a43,#1769aa);color:white;padding:22px 18px 26px;border-radius:0 0 24px 24px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px}.brand{font-size:13px;opacity:.85}.logo{font-size:28px;font-weight:800}.tag{font-size:13px;opacity:.9;margin-top:6px}
+.wrap{max-width:760px;margin:auto;padding:14px 14px 100px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:-14px}
+.stat,.card{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:0 3px 12px #0b25400b}
+.stat{padding:13px 8px;text-align:center}.stat b{display:block;font-size:22px}.stat small{color:var(--muted)}
+nav{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:18px 0}
+nav button{border:1px solid var(--line);border-radius:12px;background:#fff;padding:11px 4px;color:var(--ink);font-weight:700}
+nav button.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+h2{font-size:20px;margin:10px 0 5px}h3{font-size:16px;margin:0 0 7px}
+.muted{color:var(--muted);font-size:13px;line-height:1.5}
+.card{padding:15px;margin:11px 0}
+.daygrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+.daybtn{padding:13px 7px;border:1px solid var(--line);border-radius:13px;background:#fff;text-align:center;font-weight:700;color:var(--ink)}
+.daybtn.active{border:2px solid var(--blue);background:#edf6ff}
+.progress{height:8px;background:#e8eef5;border-radius:20px;overflow:hidden;margin:9px 0}.progress span{display:block;height:100%;background:var(--green);width:0}
+.exercise{display:grid;grid-template-columns:62px 1fr auto;gap:10px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+.exercise:last-child{border:0}.thumb{width:62px;height:62px;border-radius:12px;background:#eaf2f9;display:grid;place-items:center;font-size:28px}
+.exercise strong{font-size:14px;display:block}.exercise small{color:var(--muted);font-size:12px}
+.check{width:23px;height:23px;accent-color:var(--green)}
+button,.btn{cursor:pointer}.primary{background:var(--blue);color:#fff;border:0;border-radius:12px;padding:12px 16px;font-weight:700}
+.secondary{background:#edf3f8;color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:10px 13px;font-weight:700}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+input,select{font:inherit;padding:11px;border:1px solid #cbd5e1;border-radius:10px;background:white;width:100%;min-width:0}
+label{font-size:13px;color:var(--muted);display:block;margin:8px 0 5px}
+.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.timer{font-size:38px;font-weight:800;text-align:center;margin:12px}
+.pill{background:#eaf5ef;color:#146c43;border-radius:30px;padding:5px 10px;font-size:12px;font-weight:700}
+.week{display:flex;align-items:center;gap:10px;margin:12px 0}.week b{background:#eaf2fa;border-radius:10px;padding:9px}
+.hidden{display:none!important}.notice{background:#fff7e6;border:1px solid #f5dfa7;padding:12px;border-radius:12px;font-size:13px;line-height:1.5}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
+</style>
+</head>
+<body>
+<header>
+ <div class="top"><div><div class="brand">מאמן הכושר הביתי שלך</div><div class="logo">Kobi Fitness 💪</div><div class="tag">מתקדמים צעד אחר צעד · 12 שבועות</div></div><div style="font-size:42px">🏋️</div></div>
+</header>
+<div class="wrap">
+ <section class="stats">
+  <div class="stat"><b>56</b><small>גיל</small></div>
+  <div class="stat"><b>85</b><small>ק״ג התחלתי</small></div>
+  <div class="stat"><b id="weekStat">1/12</b><small>שבוע בתוכנית</small></div>
+ </section>
+ <nav>
+  <button class="active" data-tab="plan">האימונים</button>
+  <button data-tab="progress">ההתקדמות</button>
+  <button data-tab="library">תרגילים</button>
+  <button data-tab="guide">הנחיות</button>
+ </nav>
+
+ <main id="plan">
+  <div class="row"><div><h2>תוכנית שבועית</h2><div class="muted">בחר יום כדי לראות את האימון שלך</div></div><span class="pill">שבוע <span id="weekLabel">1</span> מתוך 12</span></div>
+  <div class="daygrid" id="dayButtons"></div>
+  <section class="card">
+   <div class="row"><div><h3 id="workoutTitle">אימון</h3><div class="muted" id="workoutSub"></div></div><span class="pill" id="completedLabel">0/0 הושלמו</span></div>
+   <div class="progress"><span id="workoutBar"></span></div>
+   <div id="exerciseList"></div>
+   <div class="row" style="margin-top:12px">
+    <button class="secondary" id="resetDay">איפוס סימונים</button>
+    <button class="primary" id="timerStart">⏱️ הפעלת שעון מנוחה</button>
+   </div>
+   <div id="timerBox" class="hidden">
+    <div class="timer" id="timerDisplay">01:30</div>
+    <div class="row"><button class="secondary" id="timerPause">השהה</button><button class="secondary" id="timerReset">איפוס שעון</button></div>
+   </div>
+  </section>
+  <div class="card">
+   <h3>שאר השבוע</h3>
+   <div class="week"><b>ב׳</b><div><strong>הליכה מהירה</strong><div class="muted">30 דקות</div></div></div>
+   <div class="week"><b>ד׳</b><div><strong>התאוששות וגמישות</strong><div class="muted">20 דקות מתיחות ותנועתיות</div></div></div>
+   <div class="week"><b>ו׳</b><div><strong>ריצה קלה</strong><div class="muted">5 ק״מ בקצב נוח</div></div></div>
+   <div class="week"><b>ש׳</b><div><strong>מנוחה</strong><div class="muted">אפשר הליכה קלה</div></div></div>
+  </div>
+ </main>
+
+ <main id="progress" class="hidden">
+  <h2>יומן ההתקדמות שלי</h2><p class="muted">הנתונים נשמרים בדפדפן במכשיר הזה.</p>
+  <section class="card">
+   <h3>רישום מדידה</h3>
+   <div class="formgrid">
+    <div><label>תאריך</label><input id="measureDate" type="date"></div>
+    <div><label>משקל גוף (ק״ג)</label><input id="measureWeight" type="number" step=".1" placeholder="85"></div>
+    <div><label>היקף מותניים (ס״מ)</label><input id="measureWaist" type="number" step=".5" placeholder="למשל 98"></div>
+    <div><label>שבוע בתוכנית</label><select id="measureWeek"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option></select></div>
+   </div>
+   <button class="primary" id="saveMeasure" style="width:100%;margin-top:12px">שמור מדידה</button>
+  </section>
+  <section class="card"><h3>המדידות שלי</h3><div id="measureList" class="muted">עדיין אין מדידות. הוסף את המדידה הראשונה שלך.</div></section>
+  <section class="card">
+   <h3>מעקב עומסים בתרגיל</h3>
+   <label>תרגיל</label><input id="logExercise" placeholder="למשל לחיצת חזה">
+   <div class="formgrid"><div><label>משקל (ק״ג)</label><input id="logWeight" type="number" step=".5"></div><div><label>חזרות</label><input id="logReps" type="number"></div></div>
+   <button class="secondary" id="saveLog" style="width:100%;margin-top:10px">שמור תוצאה</button>
+   <div id="logList" class="muted" style="margin-top:12px"></div>
+  </section>
+  <button class="secondary" id="exportData" style="width:100%">ייצוא הנתונים לקובץ גיבוי</button>
+ </main>
+
+ <main id="library" class="hidden">
+  <h2>ספריית התרגילים</h2><p class="muted">בחר תרגיל כדי לקרוא דגשים לביצוע. התמונות/איורים בגרסה זו הם סמלים להמחשה.</p>
+  <div id="libraryList"></div>
+ </main>
+
+ <main id="guide" class="hidden">
+  <h2>הנחיות חשובות</h2>
+  <section class="card"><h3>חימום לפני אימון · 5–7 דקות</h3><p>הליכה במקום, סיבובי כתפיים, תנועתיות אגן ו-10 סקוואטים ללא משקל.</p></section>
+  <section class="card"><h3>התקדמות הדרגתית</h3><p>שבועות 1–2: שני סטים לכל תרגיל ומשקל קל. בהמשך הוסף סטים או מעט משקל רק כאשר הטכניקה טובה וההתאוששות טובה. השאר 2–3 חזרות “במיכל” ואל תגיע לכישלון.</p></section>
+  <section class="card"><h3>גמישות · 10 דקות</h3><p>מתיחת ירך אחורית, מכופפי ירך, מתיחת חזה, תאומים ו-Cat-Cow. החזק כל מתיחה 20–30 שניות ללא כאב.</p></section>
+  <section class="card"><h3>תזונה והתאוששות</h3><p>הקפד על חלבון בכל ארוחה, ירקות, שתייה ושינה מספקת. יעד חלבון התחלתי שהוצע: כ-120–135 גרם ביום, בכפוף להתאמה רפואית.</p></section>
+  <div class="notice">התוכנית היא בסיס כללי. אם יש מחלת לב, לחץ דם לא מאוזן, פציעה או כאב משמעותי, קבל אישור והכוונה רפואית. הפסק תרגיל שמייצר כאב חד, סחרחורת או קוצר נשימה חריג.</div>
+ </main>
+ <footer>Kobi Fitness · גרסה ראשונה · הנתונים נשמרים במכשיר זה</footer>
+</div>
+<script>
+const workouts={
+ sun:{name:"יום ראשון",title:"חזה, רגליים ובטן",items:[
+ ["לחיצת חזה עם משקולות","3 × 10–12","שכב על ספסל, הורד את המשקולות בשליטה ודחוף מעלה בלי לנעול מרפקים."],
+ ["סקוואט עם משקולת","3 × 12","החזק משקולת קרוב לחזה, שב לאחור לעומק נוח ושמור על גב ניטרלי."],
+ ["לחיצת חזה בשיפוע","2 × 10","כוון את הספסל לשיפוע מתון ודחוף מעלה בשליטה."],
+ ["דדליפט רומני","2 × 10","דחוף אגן לאחור, שמור משקולות קרוב לרגליים וגב ניטרלי."],
+ ["Dead Bug","2 × 10 לכל צד","שכב על הגב והארך יד ורגל נגדיות תוך שמירה על גב תחתון יציב."],
+ ["פלאנק","2 × 20–30 שניות","שמור גוף בקו ישר, כווץ בטן ונשום באופן רציף."]],
+ tue:{name:"יום שלישי",title:"גב, כתפיים וידיים",items:[
+ ["משיכת פולי עליון לחזה","3 × 12","משוך את המוט/ידית לכיוון החזה. אל תמשוך מאחורי הראש."],
+ ["חתירה עם משקולת","3 × 10 לכל צד","תמוך ביד על הספסל ומשוך מרפק לכיוון האגן."],
+ ["לחיצת כתפיים בישיבה","2 × 10","השתמש במשקל קל, טווח תנועה נוח וללא כאב."],
+ ["כפיפת מרפקים – יד קדמית","2 × 12","הצמד מרפקים לצדי הגוף והעלה ללא תנופה."],
+ ["פשיטת מרפקים בפולי","2 × 12","הצמד מרפקים לצדי הגוף ויישר מטה בשליטה."],
+ ["Bird Dog","2 × 10 לכל צד","מעמידת שש, הארך יד ורגל נגדיות ושמור אגן יציב."]],
+ thu:{name:"יום חמישי",title:"רגליים, ישבן וחיזוק כללי",items:[
+ ["עלייה על מדרגה יציבה","2 × 10 לכל רגל","השתמש במדרגה נמוכה ויציבה. עלה בשליטה והיעזר במעקה אם צריך."],
+ ["גשר ישבן","3 × 12","שכב עם ברכיים כפופות והרם אגן תוך כיווץ הישבן."],
+ ["הרמות עקבים","3 × 15","עלה על קצות האצבעות באיטיות והורד בשליטה."],
+ ["לחיצת חזה על הרצפה","2 × 12","שכב על הרצפה ודחוף משקולות מעלה; המרפקים נעצרים ברצפה."],
+ ["Face Pull בפולי","2 × 12","משוך חבל לכיוון הפנים, מרפקים פתוחים, בלי למשוך בכאב."],
+ ["פלאנק צדי","2 × 20 שניות לכל צד","החזק גוף בקו ישר; אפשר להתחיל כשהברכיים על הרצפה."]]}
+};
+const icons=["🏋️","🦵","💪","↘️","🧘","⏱️"];
+let selected="sun",done=JSON.parse(localStorage.getItem("kfit_done")||"{}");
+let measures=JSON.parse(localStorage.getItem("kfit_measures")||"[]");
+let logs=JSON.parse(localStorage.getItem("kfit_logs")||"[]");
+let seconds=90, timer=null, paused=false;
+const $=id=>document.getElementById(id);
+function saveDone(){localStorage.setItem("kfit_done",JSON.stringify(done))}
+function renderDays(){
+ $("dayButtons").innerHTML=Object.entries(workouts).map(([id,w])=>`<button class="daybtn ${id===selected?'active':''}" data-day="${id}">${w.name}<br><small>${w.title}</small></button>`).join("");
+ document.querySelectorAll("[data-day]").forEach(b=>b.onclick=()=>{selected=b.dataset.day;renderDays();renderWorkout()});
+}
+function renderWorkout(){
+ let w=workouts[selected],checks=done[selected]||[];
+ $("workoutTitle").textContent=w.title;$("workoutSub").textContent=w.name+" · אימון כוח";
+ $("completedLabel").textContent=checks.length+"/"+w.items.length+" הושלמו";
+ $("workoutBar").style.width=(checks.length/w.items.length*100)+"%";
+ $("exerciseList").innerHTML=w.items.map((it,i)=>`<div class="exercise"><div class="thumb">${icons[i]}</div><div><strong>${i+1}. ${it[0]}</strong><small>${it[1]}</small><div><button class="secondary" style="padding:5px 8px;margin-top:5px;font-size:11px" data-info="${i}">איך מבצעים?</button></div><div class="muted hidden" id="info${i}" style="margin-top:6px">${it[2]}</div></div><input class="check" type="checkbox" data-check="${i}" ${checks.includes(i)?"checked":""} aria-label="סמן בוצע"></div>`).join("");
+ document.querySelectorAll("[data-check]").forEach(c=>c.onchange=()=>{let i=+c.dataset.check;done[selected]=done[selected]||[];done[selected]=c.checked?[...new Set([...done[selected],i])]:done[selected].filter(x=>x!==i);saveDone();renderWorkout()});
+ document.querySelectorAll("[data-info]").forEach(b=>b.onclick=()=> $("info"+b.dataset.info).classList.toggle("hidden"));
+}
+function renderLibrary(){
+ $("libraryList").innerHTML=Object.values(workouts).flatMap(w=>w.items).map((it,i)=>`<section class="card"><h3>${it[0]}</h3><div class="pill">${it[1]}</div><p class="muted">${it[2]}</p></section>`).join("");
+}
+function renderMeasures(){
+ $("measureList").innerHTML=measures.length?measures.slice().reverse().map(m=>`<div class="row" style="padding:9px 0;border-bottom:1px solid var(--line)"><span>${m.date} · שבוע ${m.week}</span><strong>${m.weight||"—"} ק״ג · ${m.waist||"—"} ס״מ</strong></div>`).join(""):"עדיין אין מדידות. הוסף את המדידה הראשונה שלך.";
+ $("logList").innerHTML=logs.length?logs.slice().reverse().map(x=>`<div style="padding:7px 0;border-bottom:1px solid var(--line)">${x.date} · ${x.exercise}: ${x.weight||"—"} ק״ג × ${x.reps||"—"} חזרות</div>`).join(""):"אין רישומי תרגילים עדיין.";
+}
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));b.classList.add("active");["plan","progress","library","guide"].forEach(id=>$(id).classList.toggle("hidden",id!==b.dataset.tab));if(b.dataset.tab==="progress")renderMeasures()});
+$("resetDay").onclick=()=>{if(confirm("לאפס את סימוני האימון הזה?")){done[selected]=[];saveDone();renderWorkout()}};
+$("timerStart").onclick=()=>{$("timerBox").classList.remove("hidden");if(timer)clearInterval(timer);seconds=90;paused=false;updateTimer();timer=setInterval(()=>{if(!paused&&seconds>0){seconds--;updateTimer()}else if(seconds===0){clearInterval(timer);timer=null; $("timerDisplay").textContent="מנוחה הסתיימה!"}},1000)};
+$("timerPause").onclick=()=>{paused=!paused;$("timerPause").textContent=paused?"המשך":"השהה"};
+$("timerReset").onclick=()=>{seconds=90;paused=true;updateTimer();$("timerPause").textContent="המשך"};
+function updateTimer(){$("timerDisplay").textContent=String(Math.floor(seconds/60)).padStart(2,"0")+":"+String(seconds%60).padStart(2,"0")}
+$("measureDate").value=new Date().toISOString().slice(0,10);
+$("saveMeasure").onclick=()=>{let m={date:$("measureDate").value,weight:$("measureWeight").value,waist:$("measureWaist").value,week:$("measureWeek").value};if(!m.weight&&!m.waist){alert("הזן משקל או היקף מותניים");return}measures.push(m);localStorage.setItem("kfit_measures",JSON.stringify(measures));$("measureWeight").value="";$("measureWaist").value="";renderMeasures()};
+$("saveLog").onclick=()=>{let x={date:new Date().toLocaleDateString("he-IL"),exercise:$("logExercise").value,weight:$("logWeight").value,reps:$("logReps").value};if(!x.exercise){alert("הזן שם תרגיל");return}logs.push(x);localStorage.setItem("kfit_logs",JSON.stringify(logs));$("logExercise").value="";$("logWeight").value="";$("logReps").value="";renderMeasures()};
+$("exportData").onclick=()=>{let blob=new Blob([JSON.stringify({done,measures,logs},null,2)],{type:"application/json"});let a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="kobi-fitness-backup.json";a.click();URL.revokeObjectURL(a.href)};
+renderDays();renderWorkout();renderLibrary();renderMeasures();
+if("serviceWorker" in navigator && location.protocol.startsWith("http"))navigator.serviceWorker.register("./sw.js");
+</script>
+</body></html>
